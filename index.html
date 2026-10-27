@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Java Multithreading Part 2</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <nav>
+        <div class="logo">Thread<span>Lab.</span></div>
+        <a href="#topics">Explore Concepts ↗</a>
+      </nav>
+
+      <div class="hero-content">
+        <span class="tag">JAVA PROGRAMMING • PART 02</span>
+        <h1>Threads in Action.<br /><span>Concurrency Simplified.</span></h1>
+        <p>
+          Explore daemon threads, priority, synchronization and race conditions
+          with interactive demonstrations.
+        </p>
+        <a class="main-btn" href="#topics">Start Exploring ↓</a>
+      </div>
+      <div class="circle circle-one"></div>
+      <div class="circle circle-two"></div>
+    </header>
+
+    <main id="topics">
+      <section class="intro">
+        <span class="tag">MULTITHREADING SERIES</span>
+        <h2>Four Concepts You Must Know</h2>
+        <p>
+          Learn the meaning, rules, examples and practical behavior of each
+          concept.
+        </p>
+      </section>
+
+      <section class="concept" id="daemon">
+        <div class="heading">
+          <span class="number">01</span>
+          <div>
+            <span class="tag">BACKGROUND EXECUTION</span>
+            <h2>Daemon Thread</h2>
+          </div>
+        </div>
+
+        <p>
+          A daemon thread is a background service thread that supports other
+          threads. The JVM can exit when no live non-daemon threads remain.
+        </p>
+
+        <h3>Important points</h3>
+        <ul>
+          <li>Use <code>setDaemon(true)</code> before starting the thread.</li>
+          <li>Use <code>isDaemon()</code> to check whether it is a daemon.</li>
+          <li>Daemon threads do not keep the JVM alive by themselves.</li>
+          <li>
+            The JVM does not guarantee that daemon work will finish before exit.
+          </li>
+        </ul>
+
+        <h3>Interactive demonstration</h3>
+        <p>
+          This simulation shows how a background task behaves when the main task
+          finishes.
+        </p>
+
+        <div class="demo">
+          <div class="status-row">
+            <span>Background Thread</span>
+            <span id="daemonStatus" class="status">Not started</span>
+          </div>
+          <div class="track"><div id="daemonBar" class="progress"></div></div>
+          <button onclick="runDaemon()">Run Daemon Simulation</button>
+          <button class="secondary" onclick="resetDaemon()">Reset</button>
+          <pre id="daemonOutput">Waiting to start...</pre>
+        </div>
+        <div class="note">
+          Note: This is a JavaScript simulation of the concept, not an actual
+          JVM daemon thread.
+        </div>
+      </section>
+
+      <section class="concept" id="priority">
+        <div class="heading">
+          <span class="number">02</span>
+          <div>
+            <span class="tag">SCHEDULING</span>
+            <h2>Thread Priority</h2>
+          </div>
+        </div>
+
+        <p>
+          Thread priority is a scheduling hint that indicates the relative
+          importance of a thread.
+        </p>
+
+        <div class="priority-grid">
+          <div class="low"><strong>1</strong><span>MIN_PRIORITY</span></div>
+          <div class="normal"><strong>5</strong><span>NORM_PRIORITY</span></div>
+          <div class="high"><strong>10</strong><span>MAX_PRIORITY</span></div>
+        </div>
+
+        <h3>Interactive priority simulator</h3>
+        <p>Choose a priority for each task and run the simulation.</p>
+
+        <div class="demo">
+          <label for="p1">Thread A priority</label>
+          <select id="p1">
+            <option value="1">1 — Low</option>
+            <option value="5" selected>5 — Normal</option>
+            <option value="10">10 — High</option>
+          </select>
+
+          <label for="p2">Thread B priority</label>
+          <select id="p2">
+            <option value="1">1 — Low</option>
+            <option value="5">5 — Normal</option>
+            <option value="10" selected>10 — High</option>
+          </select>
+
+          <button onclick="runPriority()">Run Priority Simulation</button>
+          <pre id="priorityOutput">Select priorities and run.</pre>
+        </div>
+        <div class="note">
+          Java priority values are 1–10. Higher priority does not guarantee
+          earlier execution. This simulator illustrates priority values, not the
+          actual Java scheduler.
+        </div>
+      </section>
+
+      <section class="concept" id="synchronization">
+        <div class="heading">
+          <span class="number">03</span>
+          <div>
+            <span class="tag">THREAD SAFETY</span>
+            <h2>Synchronization</h2>
+          </div>
+        </div>
+
+        <p>
+          Synchronization controls access to shared resources. A synchronized
+          Java method allows only one thread at a time to execute it on the same
+          object.
+        </p>
+
+        <h3>Interactive shared counter</h3>
+        <p>
+          Two simulated threads will increment the same counter 100 times each.
+        </p>
+
+        <div class="demo">
+          <div class="counter" id="syncCount">0</div>
+          <p id="syncLabel">Synchronization is ON.</p>
+
+          <label class="switch-row">
+            <input type="checkbox" id="syncToggle" checked />
+            Enable synchronization
+          </label>
+
+          <button onclick="runCounter()">Run Two Threads</button>
+          <button class="secondary" onclick="resetCounter()">
+            Reset Counter
+          </button>
+          <pre id="syncOutput">Expected final count: 200</pre>
+        </div>
+
+        <div class="note">
+          The simulator models the result of safe versus unsafe shared updates.
+          It does not create real Java threads.
+        </div>
+      </section>
+
+      <section class="concept" id="race">
+        <div class="heading">
+          <span class="number">04</span>
+          <div>
+            <span class="tag">CONCURRENT DATA ACCESS</span>
+            <h2>Race Condition</h2>
+          </div>
+        </div>
+
+        <p>
+          A race condition occurs when the result depends on the timing of
+          concurrent operations on shared data without adequate coordination.
+        </p>
+
+        <h3>Compare the two approaches</h3>
+
+        <div class="comparison">
+          <div class="problem">
+            <h3>Without Synchronization</h3>
+            <p>
+              Two threads may read the same old value and overwrite each other's
+              updates.
+            </p>
+            <code>count++;</code>
+            <button onclick="runRace()">Simulate Race Condition</button>
+            <pre id="raceOutput">Expected: 200<br>Try the simulation.</pre>
+          </div>
+
+          <div class="solution">
+            <h3>With Synchronization</h3>
+            <p>
+              Protect the shared update so concurrent threads cannot overwrite
+              one another's increments.
+            </p>
+            <code>synchronized increment()</code>
+            <button onclick="runSafeRace()">Simulate Safe Counter</button>
+            <pre id="safeOutput">Expected: 200<br>Ready to run.</pre>
+          </div>
+        </div>
+
+        <div class="note">
+          The race demonstration deliberately simulates lost updates to make the
+          concept visible. Real Java race-condition results vary between
+          executions.
+        </div>
+      </section>
+
+      <section class="revision">
+        <span class="tag">QUICK REVISION</span>
+        <h2>Remember the Difference</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Concept</th>
+                <th>Purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Daemon Thread</td>
+                <td>Background service work</td>
+              </tr>
+              <tr>
+                <td>Thread Priority</td>
+                <td>Scheduling priority hint</td>
+              </tr>
+              <tr>
+                <td>Synchronization</td>
+                <td>Safe access to shared resources</td>
+              </tr>
+              <tr>
+                <td>Race Condition</td>
+                <td>Timing-dependent shared-data problem</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="logo">Thread<span>Lab.</span></div>
+      <p>Java Multithreading · Part 2</p>
+      <a href="#">Back to Top ↑</a>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
